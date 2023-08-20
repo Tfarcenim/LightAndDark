@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "tfar.lightanddark.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "lightanddark.refmap.json",
+  "mixins": [
+    "BiomeMixin",
+    "ServerPlayerMixin"
+  ],
+  "client": [
+    "BiomeColorsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}
