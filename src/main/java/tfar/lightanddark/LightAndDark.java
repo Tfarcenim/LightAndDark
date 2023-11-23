@@ -1,18 +1,18 @@
 package tfar.lightanddark;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ColorResolver;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
-import tfar.lightanddark.mixin.BiomeColorsMixin;
+
+//todo:Do not modify BiomeColors or Rubidium/Optifine will fuck your shit up
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LightAndDark.MODID)
@@ -27,7 +27,10 @@ public class LightAndDark {
     public LightAndDark() {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        if (FMLEnvironment.dist.isClient()) {
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(LightAndDarkClient::blockColors);
+        }
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -35,7 +38,10 @@ public class LightAndDark {
         GameEvents.setupEvents();
     }
 
+
     private void clientSetup(FMLClientSetupEvent e) {
+        MinecraftForge.EVENT_BUS.addListener(LightAndDarkClient::fogColor);
+        MinecraftForge.EVENT_BUS.addListener(LightAndDarkClient::renderFog);
     }
 
     public static boolean enabled(ServerLevel level) {

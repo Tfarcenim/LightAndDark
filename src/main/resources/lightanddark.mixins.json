@@ -4,11 +4,11 @@
   "compatibilityLevel": "JAVA_16",
   "refmap": "lightanddark.refmap.json",
   "mixins": [
-    "BiomeMixin",
     "ServerPlayerMixin"
   ],
   "client": [
-    "BiomeColorsMixin"
+    "ClientLevelMixin",
+    "RenderChunkRegionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -20,9 +20,9 @@ public abstract class ServerPlayerMixin extends LivingEntity {
 
 	@Shadow public abstract ServerLevel serverLevel();
 
-	@Inject(at = @At("HEAD"), method = "isPvpAllowed")
+	@Inject(at = @At("HEAD"), method = "isPvpAllowed", cancellable = true)
 	private void init(CallbackInfoReturnable<Boolean> cir) {
-		if (LightAndDark.enabled(serverLevel())) {
+		if (LightAndDark.enabled(serverLevel()) && level().dimension() == Level.OVERWORLD) {
 			cir.setReturnValue(!LightAndDark.light(position()));
 		}
 	}
